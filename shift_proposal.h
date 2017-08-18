@@ -30,4 +30,13 @@ ForwardIt shift_left(ForwardIt first, ForwardIt last, typename std::iterator_tra
     return std::move(std::next(first, n), last, first);
 }
 
+template<class BidirIt>
+BidirIt shift_right(BidirIt first, BidirIt last, typename std::iterator_traits<BidirIt>::difference_type n)
+{
+    assert(n >= 0);
+    if (n == 0)
+        return first;
+    return std::move_backward(first, std::prev(last, n), last);
+}
+
 #endif // !defined(SHIFT_PROPOSAL_H)
