@@ -3,20 +3,21 @@
 
 #include <algorithm>
 #include <iterator>
+#include <utility>
 
-template<class BidirIt> // TODO: shifting elements left should also be allowed for forward iterators
-void shift(BidirIt first, BidirIt last, typename std::iterator_traits<BidirIt>::difference_type n)
+template<class BidirIt>
+std::pair<BidirIt, BidirIt> shift(BidirIt first, BidirIt last, typename std::iterator_traits<BidirIt>::difference_type n)
 {
     if (n == 0)
-        return;
+        return { first, last };
 
     // Shift elements right (forward)
     if (n > 0)
-        std::move_backward(first, std::prev(last, n), last);
-    
+        return { std::move_backward(first, std::prev(last, n), last), last };
+
+    // n < 0
     // Shift elements left (backward)
-    else
-        std::move(std::next(first, -n), last, first);
+    return { first, std::move(std::next(first, -n), last, first) };
 }
 
 #endif // !defined(SHIFT_PROPOSAL_H)
