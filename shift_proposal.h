@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SHIFT_PROPOSAL_H
+#define SHIFT_PROPOSAL_H
 
 #include <algorithm>
 #include <iterator>
@@ -17,3 +18,5 @@ void shift(BidirIt first, BidirIt last, typename std::iterator_traits<BidirIt>::
     else
         std::move(std::prev(first, n), last, first);
 }
+
+#endif // !defined(SHIFT_PROPOSAL_H)
