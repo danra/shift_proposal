@@ -1,5 +1,6 @@
 #include "shift_proposal.h"
 
+#include <forward_list>
 #include <iostream>
 #include <vector>
 
@@ -7,6 +8,7 @@ int main()
 {
     std::vector<int> v1 {1, 2, 3, 4, 5};
     std::vector<int> v2 {1, 2, 3, 4, 5};
+    std::forward_list<int> flist {1, 2, 3, 4, 5};
     
     {
         auto [first, last] = shift(v1.begin(), v1.end(), 2);
@@ -32,6 +34,20 @@ int main()
 
         std::cout << "v2 shifted elements = "; // 4 5
         for (auto it = first; it != last; ++it)
+            std::cout << *it << " ";
+        std::cout << std::endl;
+    }
+    
+    {
+        auto last = shift_left(flist.begin(), flist.end(), 3);
+        
+        std::cout << "flist after shift left by 3 = "; // 4 5 3 4 5
+        for (auto& elem : flist)
+            std::cout << elem << " ";
+        std::cout << std::endl;
+        
+        std::cout << "flist shifted elements = "; // 4 5
+        for (auto it = flist.begin(); it != last; ++it)
             std::cout << *it << " ";
         std::cout << std::endl;
     }

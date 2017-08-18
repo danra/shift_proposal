@@ -2,6 +2,7 @@
 #define SHIFT_PROPOSAL_H
 
 #include <algorithm>
+#include <cassert>
 #include <iterator>
 #include <utility>
 
@@ -18,6 +19,15 @@ std::pair<BidirIt, BidirIt> shift(BidirIt first, BidirIt last, typename std::ite
     // n < 0
     // Shift elements left (backward)
     return { first, std::move(std::next(first, -n), last, first) };
+}
+
+template<class ForwardIt>
+ForwardIt shift_left(ForwardIt first, ForwardIt last, typename std::iterator_traits<ForwardIt>::difference_type n)
+{
+    assert(n >= 0);
+    if (n == 0)
+        return last;
+    return std::move(std::next(first, n), last, first);
 }
 
 #endif // !defined(SHIFT_PROPOSAL_H)
