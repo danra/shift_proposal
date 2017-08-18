@@ -16,7 +16,7 @@ void shift(BidirIt first, BidirIt last, typename std::iterator_traits<BidirIt>::
     
     // Shift elements left (backward)
     else
-        std::move(std::prev(first, n), last, first);
+        std::move(std::next(first, -n), last, first);
 }
 
 #endif // !defined(SHIFT_PROPOSAL_H)
