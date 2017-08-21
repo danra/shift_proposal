@@ -25,8 +25,8 @@ namespace {
         for (auto i = -2 * n; i < 3 * n; ++i) {
             auto const clamped = std::clamp(i, 0, n);
             Sequence s{1, 2, 3, 4, 5};
-            auto control = {1, 2, 3, 4, 5};
-            auto last = shift_left(begin(s), end(s), i);
+            auto const control = {1, 2, 3, 4, 5};
+            auto const last = shift_left(begin(s), end(s), i);
             assert(std::equal(begin(control) + clamped, end(control), begin(s), last));
         }
 
@@ -34,8 +34,8 @@ namespace {
         for (auto i = -2 * n; i < 3 * n; ++i) {
             auto const clamped = std::clamp(i, 0, n);
             Sequence s{1, 2, 3, 4, 5};
-            auto control = {1, 2, 3, 4, 5};
-            auto last = shift_left(begin(s), end(s), i, 0);
+            auto const control = {1, 2, 3, 4, 5};
+            auto const last = shift_left(begin(s), end(s), i, 0);
             assert(std::equal(begin(control) + clamped, end(control), begin(s), last));
             assert(std::all_of(last, end(s), [](auto const& x){ return x == 0; }));
         }
@@ -44,8 +44,8 @@ namespace {
         for (auto i = -2 * n; i < 3 * n; ++i) {
             auto const clamped = std::clamp(i, 0, n);
             Sequence s{1, 2, 3, 4, 5};
-            auto control = {1, 2, 3, 4, 5};
-            auto first = shift_right(begin(s), end(s), i);
+            auto const control = {1, 2, 3, 4, 5};
+            auto const first = shift_right(begin(s), end(s), i);
             assert(std::equal(begin(control), end(control) - clamped, first, end(s)));
         }
 
@@ -53,8 +53,8 @@ namespace {
         for (auto i = -2 * n; i < 3 * n; ++i) {
             auto const clamped = std::clamp(i, 0, n);
             Sequence s{1, 2, 3, 4, 5};
-            auto control = {1, 2, 3, 4, 5};
-            auto first = shift_right(begin(s), end(s), i, 0);
+            auto const control = {1, 2, 3, 4, 5};
+            auto const first = shift_right(begin(s), end(s), i, 0);
             assert(std::equal(begin(control), end(control) - clamped, first, end(s)));
             assert(std::all_of(begin(s), first, [](auto const& x){ return x == 0; }));
         }
