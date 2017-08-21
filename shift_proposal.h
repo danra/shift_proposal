@@ -110,6 +110,7 @@ ForwardIt shift_right(ForwardIt first, ForwardIt last, difference_type_t<Forward
     }
 }
 
+// It's still being contemplated whether the shift with filler methods should be a part of the proposal.
 template<class ForwardIt, class T>
 ForwardIt shift_left(ForwardIt first, ForwardIt last, difference_type_t<ForwardIt> n, T const& filler)
 {
