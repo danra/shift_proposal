@@ -1,38 +1,74 @@
 #include "shift_proposal.h"
 
 #include <cassert>
+#include <array>
+#include <deque>
 #include <forward_list>
+#include <list>
 #include <vector>
+
+namespace {
+    template<class Sequence>
+    void test() {
+        using std::begin;
+        using std::end;
+
+        constexpr int n = 5;
+
+#ifdef __clang__
+// Tell clang to shut up about std::array {} initializations.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-braces"
+#endif // __clang__
+
+        // shift left by i in [-2n, 3n)
+        for (auto i = -2 * n; i < 3 * n; ++i) {
+            auto const clamped = std::clamp(i, 0, n);
+            Sequence s{1, 2, 3, 4, 5};
+            auto control = {1, 2, 3, 4, 5};
+            auto last = shift_left(begin(s), end(s), i);
+            assert(std::equal(begin(control) + clamped, end(control), begin(s), last));
+        }
+
+        // shift left by i in [-2n, 3n) and fill
+        for (auto i = -2 * n; i < 3 * n; ++i) {
+            auto const clamped = std::clamp(i, 0, n);
+            Sequence s{1, 2, 3, 4, 5};
+            auto control = {1, 2, 3, 4, 5};
+            auto last = shift_left(begin(s), end(s), i, 0);
+            assert(std::equal(begin(control) + clamped, end(control), begin(s), last));
+            assert(std::all_of(last, end(s), [](auto const& i){ return i == 0; }));
+        }
+
+        // shift right by i in [-2n, 3n)
+        for (auto i = -2 * n; i < 3 * n; ++i) {
+            auto const clamped = std::clamp(i, 0, n);
+            Sequence s{1, 2, 3, 4, 5};
+            auto control = {1, 2, 3, 4, 5};
+            auto first = shift_right(begin(s), end(s), i);
+            assert(std::equal(begin(control), end(control) - clamped, first, end(s)));
+        }
+
+        // shift right by i in [-2n, 3n) and fill
+        for (auto i = -2 * n; i < 3 * n; ++i) {
+            auto const clamped = std::clamp(i, 0, n);
+            Sequence s{1, 2, 3, 4, 5};
+            auto control = {1, 2, 3, 4, 5};
+            auto first = shift_right(begin(s), end(s), i, 0);
+            assert(std::equal(begin(control), end(control) - clamped, first, end(s)));
+            assert(std::all_of(begin(s), first, [](auto const& i){ return i == 0; }));
+        }
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif // __clang__
+    }
+} // unnamed namespace
 
 int main()
 {
-    {
-        std::forward_list<int> flist {1, 2, 3, 4, 5};
-        auto last = shift_left(flist.begin(), flist.end(), 3);
-        assert((flist == std::forward_list<int>{4, 5, 3, 4, 5}));
-        assert((std::forward_list<int>{flist.begin(), last} == std::forward_list<int>{4, 5}));
-    }
-    
-    {
-        std::forward_list<int> flist {1, 2, 3, 4, 5};
-        auto last = shift_left(flist.begin(), flist.end(), 3, 0);
-        assert((flist == std::forward_list<int>{4, 5, 0, 0, 0}));
-        assert((std::forward_list<int>{flist.begin(), last} == std::forward_list<int>{4, 5}));
-    }
-    
-    {
-        std::vector<int> v {1, 2, 3, 4, 5};
-        auto first = shift_right(v.begin(), v.end(), 2);
-        assert((v == std::vector<int>{1, 2, 1, 2, 3}));
-        assert((std::vector<int>{first, v.end()} == std::vector<int>{1, 2, 3}));
-    }
-    
-    {
-        std::vector<int> v {1, 2, 3, 4, 5};
-        auto first = shift_right(v.begin(), v.end(), 2, 0);
-        assert((v == std::vector<int>{0, 0, 1, 2, 3}));
-        assert((std::vector<int>{first, v.end()} == std::vector<int>{1, 2, 3}));
-    }
-    
-    return 0;
+    test<std::array<int, 5>>();
+    test<std::deque<int>>();
+    test<std::forward_list<int>>();
+    test<std::list<int>>();
+    test<std::vector<int>>();
 }
