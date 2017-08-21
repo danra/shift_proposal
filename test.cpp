@@ -1,7 +1,7 @@
 #include "shift_proposal.h"
 
-#include <cassert>
 #include <array>
+#include <cassert>
 #include <deque>
 #include <forward_list>
 #include <list>
