@@ -37,7 +37,7 @@ namespace {
             auto control = {1, 2, 3, 4, 5};
             auto last = shift_left(begin(s), end(s), i, 0);
             assert(std::equal(begin(control) + clamped, end(control), begin(s), last));
-            assert(std::all_of(last, end(s), [](auto const& i){ return i == 0; }));
+            assert(std::all_of(last, end(s), [](auto const& x){ return x == 0; }));
         }
 
         // shift right by i in [-2n, 3n)
@@ -56,7 +56,7 @@ namespace {
             auto control = {1, 2, 3, 4, 5};
             auto first = shift_right(begin(s), end(s), i, 0);
             assert(std::equal(begin(control), end(control) - clamped, first, end(s)));
-            assert(std::all_of(begin(s), first, [](auto const& i){ return i == 0; }));
+            assert(std::all_of(begin(s), first, [](auto const& x){ return x == 0; }));
         }
 #ifdef __clang__
 #pragma clang diagnostic pop
