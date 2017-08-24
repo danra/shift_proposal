@@ -110,21 +110,4 @@ ForwardIt shift_right(ForwardIt first, ForwardIt last, difference_type_t<Forward
     }
 }
 
-// It's still being contemplated whether the shift with filler methods should be a part of the proposal.
-template<class ForwardIt, class T>
-ForwardIt shift_left(ForwardIt first, ForwardIt last, difference_type_t<ForwardIt> n, T const& filler)
-{
-    ForwardIt result = ::shift_left(std::move(first), last, n);
-    std::fill(result, std::move(last), filler);
-    return result;
-}
-
-template<class ForwardIt, class T>
-ForwardIt shift_right(ForwardIt first, ForwardIt last, difference_type_t<ForwardIt> n, T const& filler)
-{
-    ForwardIt result = ::shift_right(first, std::move(last), n);
-    std::fill(std::move(first), result, filler);
-    return result;
-}
-
 #endif // !defined(SHIFT_PROPOSAL_H)

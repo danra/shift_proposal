@@ -44,15 +44,6 @@ namespace {
             auto const last = shift_left(begin(s), end(s), i);
             assert(std::equal(begin(control) + clamped, end(control), begin(s), last));
         }
-
-        // shift left by i in [-2n-2, 3n+3) and fill
-        for (auto i = -2 * n - 2; i < 3 * n + 3; ++i) {
-            auto const clamped = std::clamp(i, 0, n);
-            auto s = generate_indexes<Sequence, n>();
-            auto const last = shift_left(begin(s), end(s), i, 0);
-            assert(std::equal(begin(control) + clamped, end(control), begin(s), last));
-            assert(std::all_of(last, end(s), [](auto const& x){ return x == 0; }));
-        }
         
         // shift right by i in [-2n-2, 3n+3)
         for (auto i = -2 * n - 2; i < 3 * n + 3; ++i) {
@@ -60,15 +51,6 @@ namespace {
             auto s = generate_indexes<Sequence, n>();
             auto const first = shift_right(begin(s), end(s), i);
             assert(std::equal(begin(control), end(control) - clamped, first, end(s)));
-        }
-        
-        // shift right by i in [-2n-2, 3n+3) and fill
-        for (auto i = -2 * n - 2; i < 3 * n + 3; ++i) {
-            auto const clamped = std::clamp(i, 0, n);
-            auto s = generate_indexes<Sequence, n>();
-            auto const first = shift_right(begin(s), end(s), i, 0);
-            assert(std::equal(begin(control), end(control) - clamped, first, end(s)));
-            assert(std::all_of(begin(s), first, [](auto const& x){ return x == 0; }));
         }
     }
     
